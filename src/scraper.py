@@ -2,8 +2,14 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-def fetch_html(product_id):
-    url = f"https://www.ceneo.pl/{product_id}#tab=reviews"
+import requests
+
+def fetch_html(product_id, page=1):
+    if page == 1:
+        url = f"https://www.ceneo.pl/{product_id}#tab=reviews"
+    else:
+        url = f"https://www.ceneo.pl/{product_id}/opinie-{page}"
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
     }
@@ -13,15 +19,17 @@ def fetch_html(product_id):
         response.raise_for_status()
         return response.text
     except requests.RequestException as e:
-        print(f"❌ Failed to fetch data for product {product_id}. Error: {e}")
+        print(f"❌ Failed to fetch page {page} for product {product_id}. Error: {e}")
         return None
+
+
 
 def extract_all_opinions(html):
     soup = BeautifulSoup(html, "html.parser")
     opinions = soup.find_all("div", class_="user-post__card")
 
     if not opinions:
-        print("⚠️ No opinions found. ")
+        print("⚠️ No opinions found. Maybe due to ceneo block")
         return []
 
     extracted_opinions = []
@@ -39,5 +47,35 @@ def extract_all_opinions(html):
             "publish_date": opinion.find("time", class_="user-post__published").get("datetime") if opinion.find("time", class_="user-post__published") else "N/A",
             "purchase_date": opinion.find("time", class_="user-post__published").text.strip() if opinion.find("time", class_="user-post__published") else "N/A"
         }
-        extracted_opinions.append(json.dumps(review_data, indent=4, ensure_ascii=False))
+        extracted_opinions.append(review_data)
     return extracted_opinions
+  
+  
+def extract_all_pages(product_id):
+    page = 1
+    all_opinions = []
+    seen_opinion_ids = set()
+
+    while True:
+        html = fetch_html(product_id, page)  # Pass page number correctly
+
+        if not html:
+            break
+
+        opinions = extract_all_opinions(html)
+
+        if not opinions:
+            break  # Stop if no new opinions are found
+
+        for opinion in opinions:
+            if isinstance(opinion, dict) and "opinion_id" in opinion:  # Ensure correct format
+                if opinion["opinion_id"] not in seen_opinion_ids:
+                    seen_opinion_ids.add(opinion["opinion_id"])
+                    all_opinions.append(opinion)
+
+        page += 1  # Move to next page
+
+    return all_opinions
+
+
+
