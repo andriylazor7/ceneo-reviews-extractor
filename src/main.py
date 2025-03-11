@@ -1,10 +1,9 @@
-from scraper import fetch_html, extract_all_opinions
+from scraper import extract_all_pages
 
 if __name__ == "__main__":
     product_id = input("Enter product ID: ")
-    html = fetch_html(product_id)
+    opinions = extract_all_pages(product_id)
 
-    if html:
-        opinions = extract_all_opinions(html)
-        for opinion in opinions:
-          print(opinion)
+    print(f"Total opinions extracted: {len(opinions)}")
+    for opinion in opinions:
+      print(opinion)
