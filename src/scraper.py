@@ -79,7 +79,7 @@ def extract_all_pages(product_id):
 
 def save_to_json(data, product_id):
     """Saves extracted data to a JSON file."""
-    filename = f"ceneo-reviews-extractor/data/{product_id}.json"
+    filename = f"data/{product_id}.json"
 
     with open(filename, "w", encoding="utf-8") as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=False)
@@ -92,7 +92,7 @@ def save_to_csv(data, product_id):
         print("⚠️ No data to save.")
         return
       
-    filename = f"ceneo-reviews-extractor/data/{product_id}.csv"
+    filename = f"data/{product_id}.csv"
 
     keys = data[0].keys()
     with open(filename, "w", encoding="utf-8", newline="") as csv_file:
