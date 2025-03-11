@@ -16,15 +16,16 @@ def fetch_html(product_id):
         print(f"❌ Failed to fetch data for product {product_id}. Error: {e}")
         return None
 
-def extract_single_opinion(html):
+def extract_all_opinions(html):
     soup = BeautifulSoup(html, "html.parser")
-    opinion = soup.find("div", class_="user-post__card")
+    opinions = soup.find_all("div", class_="user-post__card")
 
-    if not opinion:
-        print("⚠️ No review found. Check the HTML structure.")
-        return None
+    if not opinions:
+        print("⚠️ No opinions found. ")
+        return []
 
-    try:
+    extracted_opinions = []
+    for opinion in opinions:
         review_data = {
             "opinion_id": opinion.get("data-entry-id"),
             "author": opinion.find("span", class_="user-post__author-name").text.strip() if opinion.find("span", class_="user-post__author-name") else "Unknown",
@@ -38,7 +39,5 @@ def extract_single_opinion(html):
             "publish_date": opinion.find("time", class_="user-post__published").get("datetime") if opinion.find("time", class_="user-post__published") else "N/A",
             "purchase_date": opinion.find("time", class_="user-post__published").text.strip() if opinion.find("time", class_="user-post__published") else "N/A"
         }
-        return json.dumps(review_data, indent=4, ensure_ascii=False)
-    except AttributeError as e:
-        print(f"⚠️ Error extracting opinion: {e}")
-        return None
+        extracted_opinions.append(json.dumps(review_data, indent=4, ensure_ascii=False))
+    return extracted_opinions
