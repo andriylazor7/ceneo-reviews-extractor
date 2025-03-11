@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
-import requests
+import csv
+import os
 
 def fetch_html(product_id, page=1):
     if page == 1:
@@ -77,5 +77,29 @@ def extract_all_pages(product_id):
 
     return all_opinions
 
+def save_to_json(data, product_id):
+    """Saves extracted data to a JSON file."""
+    filename = f"ceneo-reviews-extractor/data/{product_id}.json"
+
+    with open(filename, "w", encoding="utf-8") as json_file:
+        json.dump(data, json_file, indent=4, ensure_ascii=False)
+
+    print(f"Data saved to {filename}")
+
+def save_to_csv(data, product_id):
+    """Saves extracted data to a CSV file."""
+    if not data:
+        print("⚠️ No data to save.")
+        return
+      
+    filename = f"ceneo-reviews-extractor/data/{product_id}.csv"
+
+    keys = data[0].keys()
+    with open(filename, "w", encoding="utf-8", newline="") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(data)
+
+    print(f"Data saved to {filename}")
 
 
