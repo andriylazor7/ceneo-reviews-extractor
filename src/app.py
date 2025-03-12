@@ -19,6 +19,10 @@ def extract():
     if not product_id:
       return render_template("extract.html", error="Please enter a product ID.")
     
+    if not product_id.isdigit():
+      return render_template("extract.html", error="Please enter valid product ID. ")
+      
+    
     scraper = Scraper(product_id)
     product = scraper.scrape_all_pages()
     
