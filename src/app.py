@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from scraper import Scraper
 import os
+import json
 
 app = Flask(__name__, template_folder="my_templates")
 
@@ -43,7 +44,10 @@ def product(product_id):
   if not os.path.exists(json_file):
     return "Product data not found.", 404
   
-  return render_template("product.html", product_id=product_id)
+  with open(json_file, "r", encoding="utf-8") as file:
+    opinions = json.load(file)
+  
+  return render_template("product.html", product_id=product_id, opinions=opinions, enumerate=enumerate)
 
 
 if __name__ == "__main__":
