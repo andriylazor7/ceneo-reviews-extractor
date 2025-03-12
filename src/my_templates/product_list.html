@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Scraped Product Reviews</h1>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Total Opinions</th>
+                        <th>With Advantages</th>
+                        <th>With Disadvantages</th>
+                        <th>Average Score</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <a href="/product/{{ product.product_id }}" class="btn btn-link">
+                                {{ product.product_id }}
+                            </a>
+                        </td>
+                        <td>{{ product.num_opinions }}</td>
+                        <td>{{ product.num_with_pros }}</td>
+                        <td>{{ product.num_with_cons }}</td>
+                        <td><strong>{{ product.avg_score }}</strong></td>
+                        <td>
+                            <a href="/download/{{ product.product_id }}/json" class="btn btn-sm btn-primary">JSON</a>
+                            <a href="/download/{{ product.product_id }}/csv" class="btn btn-sm btn-success">CSV</a>
+                            <a href="/download/{{ product.product_id }}/xlsx" class="btn btn-sm btn-warning">XLSX</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
