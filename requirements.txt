@@ -3,3 +3,4 @@ beautifulsoup4
 matplotlib==3.9.2
 Flask
 openpyxl
+pandas
