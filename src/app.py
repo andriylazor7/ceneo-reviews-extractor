@@ -4,6 +4,7 @@ import os
 import json
 import pandas as pd
 import io
+from visualizer import Visualizer
 
 app = Flask(__name__, template_folder="my_templates")
 
@@ -60,6 +61,7 @@ def extract():
       return render_template("extract.html", error="No opinions found for this product.")
     
     product.save_to_json()
+    product.save_to_csv()
     
     return redirect(url_for("product", product_id=product_id))
   
@@ -108,6 +110,24 @@ def download_file(product_id, file_type):
         return send_file(file_path, as_attachment=True)
     
     return "File not found", 404
+  
+@app.route("/product/<product_id>/charts")
+def show_charts(product_id):
+    file_path = f"{DATA_FOLDER}/{product_id}.json"
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            opinions = json.load(file)
+    except FileNotFoundError:
+        return "Product data not found", 404
+      
+    visualizer = Visualizer(opinions)
+
+    pie_chart = visualizer.plot_recommendation_pie_base64()
+    bar_chart = visualizer.plot_ratings_bar_base64()
+
+    return render_template("charts.html", product_id=product_id, pie_chart=pie_chart, bar_chart=bar_chart)
+
 
 if __name__ == "__main__":
   app.run(debug=True)
