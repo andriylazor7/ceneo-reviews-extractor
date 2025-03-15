@@ -8,21 +8,90 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+    h1 {
+      color: #007bff;
+    }
+    .btn-custom {
+      width: 250px;
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+    }
+    .btn-warning:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+    }
+    .btn-info {
+      background-color: #17a2b8;
+      border-color: #17a2b8;
+    }
+    .btn-info:hover {
+      background-color: #138496;
+      border-color: #117a8b;
+    }
+    .mt-4 {
+      margin-top: 40px;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+    .table thead th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+    .table td, .table th {
+      text-align: center;
+    }
+    .filters input {
+      width: 100%;
+    }
+  </style>
 </head>
 <body class="container mt-5">
   <h1 class="text-left">Reviews for Product {{ product_id }}</h1>
-  <p><a href="/" class="btn btn-secondary">Back to Home</a></p>
-  <p><a href="{{ url_for('extract') }}" class="btn btn-primary">Extract Another Product</a></p>
+  <p><a href="/" class="btn btn-secondary btn-custom">Back to Home</a></p>
+  <p><a href="{{ url_for('extract') }}" class="btn btn-primary btn-custom">Extract Another Product</a></p>
 
   <div class="mb-3">
-    <a href="/download/{{ product_id }}/json" class="btn btn-primary">Download JSON</a>
-    <a href="/download/{{ product_id }}/csv" class="btn btn-success">Download CSV</a>
-    <a href="/download/{{ product_id }}/xlsx" class="btn btn-warning">Download XLSX</a>
-    <a href="/product/{{ product_id }}/charts" class="btn btn-info">View Charts</a>
+    <a href="/download/{{ product_id }}/json" class="btn btn-primary btn-custom">Download JSON</a>
+    <a href="/download/{{ product_id }}/csv" class="btn btn-success btn-custom">Download CSV</a>
+    <a href="/download/{{ product_id }}/xlsx" class="btn btn-warning btn-custom">Download XLSX</a>
+    <a href="/product/{{ product_id }}/charts" class="btn btn-info btn-custom">View Charts</a>
   </div>
 
   <table id="reviewsTable" class="table table-bordered table-striped">
-    <thead class="table-dark">
+    <thead>
       <tr>
         <th>#</th>
         <th>Opinion ID</th>
@@ -64,7 +133,7 @@
     $(document).ready(function() {
       var table = $('#reviewsTable').DataTable({
         "paging": true,
-        "searching": false, 
+        "searching": true, 
         "ordering": true,
       });
   

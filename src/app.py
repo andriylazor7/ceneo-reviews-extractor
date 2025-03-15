@@ -25,7 +25,6 @@ def load_products():
                 num_with_pros = sum(1 for op in opinions if op.get("advantages") and op["advantages"] != "None")
                 num_with_cons = sum(1 for op in opinions if op.get("disadvantages") and op["disadvantages"] != "None")
 
-                # ✅ FIX: Filter out None or invalid scores before conversion
                 valid_scores = [float(op["score"]) for op in opinions if op.get("score") not in (None, "N/A")]
                 avg_score = round(sum(valid_scores) / len(valid_scores), 2) if valid_scores else 0
 
@@ -83,6 +82,10 @@ def product(product_id):
 def product_list():
     products = load_products()
     return render_template("product_list.html", products=products)
+  
+@app.route('/author_page')
+def author_page():
+  return render_template("author.html")
   
 @app.route("/download/<product_id>/<file_type>")
 def download_file(product_id, file_type):
