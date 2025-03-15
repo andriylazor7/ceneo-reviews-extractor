@@ -138,25 +138,36 @@
           "orderCellsTop": true, 
       });
   
-      $('#reviewsTable thead tr')
-          .clone(true)
-          .addClass('filters')
-          .appendTo('#reviewsTable thead');
-  
-      $('#reviewsTable thead .filters th').each(function() {
-          $(this).html('<input type="text" class="form-control form-control-sm" placeholder="Filter..."/>');
+      var clearFilterRow = $('<tr class="clear-filter-row"><th colspan="12" class="text-start">' +
+        '<button id="clearFilters" class="btn btn-primary btn-sm">Clear Filters</button>' +
+        '</th></tr>');
+
+      var filterRow = $('#reviewsTable thead tr')
+        .clone(true)
+        .addClass('filters');
+
+      filterRow.find('th').each(function() {
+        $(this).html('<input type="text" class="form-control form-control-sm" placeholder="Filter..."/>');
       });
+
+        $('#reviewsTable thead').prepend(clearFilterRow);
+        $('#reviewsTable thead').append(filterRow);
   
-      table.columns().every(function() {
+        table.columns().every(function() {
           var column = this;
           $('input', $('.filters th').eq(column.index())).on('keyup change', function() {
               if (column.search() !== this.value) {
                   column.search(this.value).draw();
               }
           });
-      });
+        });
   
       $('#reviewsTable thead .filters th').removeClass('sorting').off('click');
+
+      $('#clearFilters').click(function() {
+        $('.filters input').val(''); 
+        table.columns().search('').draw(); 
+      });
     });
   </script>
 </body>
