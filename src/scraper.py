@@ -23,6 +23,26 @@ class Scraper:
         except requests.RequestException as e:
             print(f"❌ Failed to fetch page {page}: {e}")
             return None
+        
+    def get_product_name(self):
+        url = f'https://www.ceneo.pl/{self.product.product_id}'
+
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            print(f"Failed to retrieve product page for {self.product.product_id}")
+            return None
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        product_name_tag = soup.find('h1', class_='product-top__product-info__name')
+        
+        if product_name_tag:
+            product_name = product_name_tag.get_text(strip=True)
+            return product_name
+        else:
+            print(f"Product name not found for {self.product.product_id}")
+            return None
 
     def extract_opinions(self, html):
         soup = BeautifulSoup(html, "html.parser")

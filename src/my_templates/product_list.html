@@ -72,6 +72,7 @@
             <table class="table table-striped table-bordered text-center">
                 <thead class="table-dark">
                     <tr>
+                        <th>Product Name</th>
                         <th>Product</th>
                         <th>Total Opinions</th>
                         <th>With Advantages</th>
@@ -83,6 +84,11 @@
                 <tbody>
                     {% for product in products %}
                     <tr>
+                        <td>
+                            <a href="/product/{{ product.product_id }}" class="btn btn-link">
+                                {{ product.product_name }}
+                            </a>
+                        </td>
                         <td>
                             <a href="/product/{{ product.product_id }}" class="btn btn-link">
                                 {{ product.product_id }}

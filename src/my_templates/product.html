@@ -79,7 +79,8 @@
   </style>
 </head>
 <body class="container mt-5">
-  <h1 class="text-left">Reviews for Product {{ product_id }}</h1>
+  <h1 class="text-left">Reviews for {{ product_name }}</h1>
+  <h1 class="text-left">Product ID: {{ product_id }}</h1>
   <p><a href="/" class="btn btn-secondary btn-custom">Back to Home</a></p>
   <p><a href="{{ url_for('extract') }}" class="btn btn-primary btn-custom">Extract Another Product</a></p>
 

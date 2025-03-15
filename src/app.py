@@ -27,8 +27,12 @@ def load_products():
 
                 valid_scores = [float(op["score"]) for op in opinions if op.get("score") not in (None, "N/A")]
                 avg_score = round(sum(valid_scores) / len(valid_scores), 2) if valid_scores else 0
+                
+                scraper = Scraper(product_id)
+                product_name = scraper.get_product_name()
 
                 products.append({
+                    "product_name": product_name,
                     "product_id": product_id,
                     "num_opinions": num_opinions,
                     "num_with_pros": num_with_pros,
@@ -75,8 +79,11 @@ def product(product_id):
   
   with open(json_file, "r", encoding="utf-8") as file:
     opinions = json.load(file)
+    
+  scraper = Scraper(product_id)
+  product_name = scraper.get_product_name()
   
-  return render_template("product.html", product_id=product_id, opinions=opinions, enumerate=enumerate)
+  return render_template("product.html", product_id=product_id, opinions=opinions, product_name=product_name, enumerate=enumerate)
 
 @app.route('/product_list')
 def product_list():
@@ -128,8 +135,11 @@ def show_charts(product_id):
 
     pie_chart = visualizer.plot_recommendation_pie_base64()
     bar_chart = visualizer.plot_ratings_bar_base64()
+    
+    scraper = Scraper(product_id)
+    product_name = scraper.get_product_name()
 
-    return render_template("charts.html", product_id=product_id, pie_chart=pie_chart, bar_chart=bar_chart)
+    return render_template("charts.html", product_id=product_id, product_name=product_name, pie_chart=pie_chart, bar_chart=bar_chart)
 
 
 if __name__ == "__main__":

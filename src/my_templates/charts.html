@@ -47,14 +47,19 @@
 </head>
 <body>
   <div class="container mt-5">
-    <h1>Product {{ product_id }} Charts</h1>
+    <h1>{{ product_name }} Charts</h1>
+    <h1>Product ID: {{ product_id }}</h1>
     <p><a href="/product/{{ product_id }}" class="btn btn-secondary">Back to Product Page</a></p>
 
-    <h3>Recommendation Pie Chart</h3>
-    <img src="{{ pie_chart }}" alt="Pie Chart" class="img-fluid">
+    <h3 class="text-center">Recommendation Pie Chart</h3><br>
+    <div class="text-center">
+      <img src="{{ pie_chart }}" alt="Pie Chart" class="img-fluid">
+    </div><br><br>
 
-    <h3 class="mt-4">Ratings Bar Chart</h3>
-    <img src="{{ bar_chart }}" alt="Bar Chart" class="img-fluid">
+    <h3 class="text-center mt-4">Ratings Bar Chart</h3><br>
+    <div class="text-center">
+      <img src="{{ bar_chart }}" alt="Bar Chart" class="img-fluid">
+    </div>
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
