@@ -63,8 +63,8 @@ class Scraper:
                 disadvantages = ", ".join([item.text.strip() for item in opinion.find_all("div", class_="review-feature__item") if item.find_previous("div", class_="review-feature__title") and "Wady" in item.find_previous("div", class_="review-feature__title").text]) or "None",
                 helpful=opinion.find("button", class_="vote-yes").text.strip() if opinion.find("button", class_="vote-yes") else "0",
                 unhelpful=opinion.find("button", class_="vote-no").text.strip() if opinion.find("button", class_="vote-no") else "0",
-                publish_date=opinion.find("time", class_="user-post__published").get("datetime") if opinion.find("time", class_="user-post__published") else "N/A",
-                purchase_date=opinion.find("time", class_="user-post__published").text.strip() if opinion.find("time", class_="user-post__published") else "N/A"
+                publish_date = (opinion.find("span", class_="user-post__published").find_all("time")[0].get("datetime") if opinion.find("span", class_="user-post__published") else "N/A"),
+                purchase_date = (opinion.find("span", class_="user-post__published").find_all("time")[1].get("datetime") if opinion.find("span", class_="user-post__published") and len(opinion.find("span", class_="user-post__published").find_all("time")) > 1 else "N/A")
             )
 
             self.product.add_opinion(review_data)
